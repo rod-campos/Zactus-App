@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { useAuth } from "../hooks/useAuth";
 import { useEffect } from "react";
 
@@ -28,22 +28,22 @@ export default function WelcomeScreen() {
           </Text>
         </View>
 
-        {/* Botões de Ação */}
         <View style={styles.buttonsContainer}>
-          <Link href="/(auth)/login" asChild>
-            <TouchableOpacity style={styles.primaryButton}>
-              <Text style={styles.primaryButtonText}>Começar</Text>
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity
+            style={styles.primaryButton}
+            onPress={() => router.push("/(auth)/login")}
+          >
+            <Text style={styles.primaryButtonText}>Começar</Text>
+          </TouchableOpacity>
 
-          <Link href="/(auth)/register" asChild>
-            <TouchableOpacity style={styles.secondaryButton}>
-              <Text style={styles.secondaryButtonText}>Já tenho uma conta</Text>
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity
+            style={styles.secondaryButton}
+            onPress={() => router.push("/(auth)/register")}
+          >
+            <Text style={styles.secondaryButtonText}>Já tenho uma conta</Text>
+          </TouchableOpacity>
         </View>
 
-        {/* Texto de Rodapé */}
         <Text style={styles.footer}>
           Ao continuar, você concorda com nossos{"\n"}
           <Text style={styles.link}>Termos de Uso</Text> e{" "}
