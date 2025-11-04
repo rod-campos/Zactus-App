@@ -50,6 +50,7 @@ export default function AuthLayout() {
         name="register"
         options={{
           title: "Criar Conta",
+          headerLeft: () => null,
         }}
       />
     </Stack>
