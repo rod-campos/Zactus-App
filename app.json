@@ -13,14 +13,16 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.rodcampos.zactusapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo_zactus.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.rodcampos.zactusapp"
     },
     "web": {
       "favicon": "./assets/logo_zactus.png"
