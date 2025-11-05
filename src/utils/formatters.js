@@ -82,3 +82,18 @@ export const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
+
+export const validatePassword = (password) => {
+  // Verifica se tem exatamente 6 dígitos
+  if (password.length !== 6) {
+    return { valid: false, message: "A senha deve ter exatamente 6 dígitos" };
+  }
+
+  // Verifica se contém apenas números
+  const isOnlyNumbers = /^\d{6}$/.test(password);
+  if (!isOnlyNumbers) {
+    return { valid: false, message: "A senha deve conter apenas números" };
+  }
+
+  return { valid: true, message: "Senha válida" };
+};

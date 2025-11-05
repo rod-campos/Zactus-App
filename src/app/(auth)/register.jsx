@@ -21,6 +21,7 @@ import {
   validateCPF,
   validateEmail,
   validatePhone,
+  validatePassword,
 } from "../../utils/formatters";
 
 const TOTAL_STEPS = 3;
@@ -31,6 +32,7 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
@@ -77,13 +79,20 @@ export default function RegisterScreen() {
   }
 
   function handleContinueStep2() {
-    if (!email || !phone || !password) {
+    if (!email || !phone || !password || !confirmPassword) {
       Alert.alert("Erro", "Por favor, preencha todos os campos");
       return;
     }
 
-    if (password.length < 6) {
-      Alert.alert("Erro", "A senha deve ter pelo menos 6 caracteres");
+    // Validação de senha (PIN de 6 dígitos)
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.valid) {
+      Alert.alert("Erro", passwordValidation.message);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert("Erro", "As senhas não coincidem");
       return;
     }
 
@@ -154,6 +163,8 @@ export default function RegisterScreen() {
             setPhone={setPhone}
             password={password}
             setPassword={setPassword}
+            confirmPassword={confirmPassword}
+            setConfirmPassword={setConfirmPassword}
             onContinue={handleContinueStep2}
             loading={loading}
           />

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   View,
   Text,
@@ -5,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { formatPhone } from "../../utils/formatters";
 
 export default function Step2({
@@ -14,9 +16,28 @@ export default function Step2({
   setPhone,
   password,
   setPassword,
+  confirmPassword,
+  setConfirmPassword,
   onContinue,
   loading,
 }) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const isValidLength = password.length === 6;
+  const isOnlyNumbers = /^\d*$/.test(password);
+
+  const handlePasswordChange = (text) => {
+    // Permite apenas números e no máximo 6 dígitos
+    const numericValue = text.replace(/[^0-9]/g, "").slice(0, 6);
+    setPassword(numericValue);
+  };
+
+  const handleConfirmPasswordChange = (text) => {
+    // Permite apenas números e no máximo 6 dígitos
+    const numericValue = text.replace(/[^0-9]/g, "").slice(0, 6);
+    setConfirmPassword(numericValue);
+  };
   return (
     <View style={styles.stepContainer}>
       <Text style={styles.title}>Dados de contato</Text>
@@ -52,24 +73,104 @@ export default function Step2({
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Senha</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="********"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          editable={!loading}
-        />
+        <Text style={styles.label}>Senha (PIN)</Text>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Digite 6 números"
+            value={password}
+            onChangeText={handlePasswordChange}
+            secureTextEntry={!showPassword}
+            keyboardType="number-pad"
+            maxLength={6}
+            autoComplete="off"
+            editable={!loading}
+          />
+          <TouchableOpacity
+            style={styles.eyeIcon}
+            onPress={() => setShowPassword(!showPassword)}
+          >
+            <Ionicons
+              name={showPassword ? "eye-off-outline" : "eye-outline"}
+              size={24}
+              color="#666"
+            />
+          </TouchableOpacity>
+        </View>
+        {password.length > 0 && (
+          <View style={styles.passwordRequirements}>
+            <View style={styles.requirementRow}>
+              <Ionicons
+                name={isValidLength ? "checkmark-circle" : "close-circle"}
+                size={16}
+                color={isValidLength ? "#10b981" : "#ef4444"}
+              />
+              <Text
+                style={[
+                  styles.requirementText,
+                  isValidLength && styles.requirementMet,
+                ]}
+              >
+                Exatamente 6 dígitos
+              </Text>
+            </View>
+            <View style={styles.requirementRow}>
+              <Ionicons
+                name={isOnlyNumbers ? "checkmark-circle" : "close-circle"}
+                size={16}
+                color={isOnlyNumbers ? "#10b981" : "#ef4444"}
+              />
+              <Text
+                style={[
+                  styles.requirementText,
+                  isOnlyNumbers && styles.requirementMet,
+                ]}
+              >
+                Apenas números
+              </Text>
+            </View>
+          </View>
+        )}
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Confirmar Senha (PIN)</Text>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Digite os 6 números novamente"
+            value={confirmPassword}
+            onChangeText={handleConfirmPasswordChange}
+            secureTextEntry={!showConfirmPassword}
+            keyboardType="number-pad"
+            maxLength={6}
+            autoComplete="off"
+            editable={!loading}
+          />
+          <TouchableOpacity
+            style={styles.eyeIcon}
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            <Ionicons
+              name={showConfirmPassword ? "eye-off-outline" : "eye-outline"}
+              size={24}
+              color="#666"
+            />
+          </TouchableOpacity>
+        </View>
+        {confirmPassword.length > 0 && password !== confirmPassword && (
+          <Text style={styles.errorText}>As senhas não coincidem</Text>
+        )}
       </View>
 
       <TouchableOpacity
         style={[
           styles.button,
-          (!email || !phone || !password || loading) && styles.buttonDisabled,
+          (!email || !phone || !password || !confirmPassword || loading) &&
+            styles.buttonDisabled,
         ]}
         onPress={onContinue}
-        disabled={loading || !email || !phone || !password}
+        disabled={loading || !email || !phone || !password || !confirmPassword}
       >
         <Text style={styles.buttonText}>Continuar</Text>
       </TouchableOpacity>
@@ -110,6 +211,44 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     fontSize: 18,
     backgroundColor: "#F9F9F9",
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
+    borderRadius: 12,
+    backgroundColor: "#F9F9F9",
+  },
+  passwordInput: {
+    flex: 1,
+    padding: 16,
+    fontSize: 18,
+  },
+  eyeIcon: {
+    padding: 16,
+  },
+  passwordRequirements: {
+    marginTop: 8,
+    gap: 4,
+  },
+  requirementRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  requirementText: {
+    fontSize: 12,
+    color: "#666",
+  },
+  requirementMet: {
+    color: "#10b981",
+  },
+  errorText: {
+    color: "#ef4444",
+    fontSize: 12,
+    marginTop: 4,
+    marginLeft: 4,
   },
   button: {
     backgroundColor: "#8b5cf6",
