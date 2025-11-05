@@ -30,6 +30,7 @@ export default function RegisterScreen() {
   const [cpf, setCpf] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
@@ -76,8 +77,13 @@ export default function RegisterScreen() {
   }
 
   function handleContinueStep2() {
-    if (!email || !phone) {
+    if (!email || !phone || !password) {
       Alert.alert("Erro", "Por favor, preencha todos os campos");
+      return;
+    }
+
+    if (password.length < 6) {
+      Alert.alert("Erro", "A senha deve ter pelo menos 6 caracteres");
       return;
     }
 
@@ -146,6 +152,8 @@ export default function RegisterScreen() {
             setEmail={setEmail}
             phone={phone}
             setPhone={setPhone}
+            password={password}
+            setPassword={setPassword}
             onContinue={handleContinueStep2}
             loading={loading}
           />

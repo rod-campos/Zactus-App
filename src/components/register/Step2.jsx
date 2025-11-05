@@ -12,6 +12,8 @@ export default function Step2({
   setEmail,
   phone,
   setPhone,
+  password,
+  setPassword,
   onContinue,
   loading,
 }) {
@@ -49,13 +51,25 @@ export default function Step2({
         />
       </View>
 
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Senha</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="********"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          editable={!loading}
+        />
+      </View>
+
       <TouchableOpacity
         style={[
           styles.button,
-          (!email || !phone || loading) && styles.buttonDisabled,
+          (!email || !phone || !password || loading) && styles.buttonDisabled,
         ]}
         onPress={onContinue}
-        disabled={loading || !email || !phone}
+        disabled={loading || !email || !phone || !password}
       >
         <Text style={styles.buttonText}>Continuar</Text>
       </TouchableOpacity>
