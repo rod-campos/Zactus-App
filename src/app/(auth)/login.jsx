@@ -22,21 +22,24 @@ export default function LoginScreen() {
   const router = useRouter();
 
   async function handleLogin() {
-    if (!email || !password) {
-      Alert.alert("Erro", "Por favor, preencha todos os campos");
-      return;
-    }
+    // if (!email || !password) {
+    //   Alert.alert("Erro", "Por favor, preencha todos os campos");
+    //   return;
+    // } else {
+    //   router.replace("/(tabs)/home");
+    // }
+    router.replace("/(tabs)/home");
 
-    try {
-      setLoading(true);
-      await signIn(email, password);
-      router.replace("/(tabs)/home");
-    } catch (error) {
-      Alert.alert("Erro", "Erro ao fazer login. Tente novamente.");
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   setLoading(true);
+    //   await signIn(email, password);
+    //   router.replace("/(tabs)/home");
+    // } catch (error) {
+    //   Alert.alert("Erro", "Erro ao fazer login. Tente novamente.");
+    //   console.error(error);
+    // } finally {
+    //   setLoading(false);
+    // }
   }
 
   return (
